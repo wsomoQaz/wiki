@@ -7,7 +7,7 @@ local Window = WindUI:CreateWindow({
     Folder = "MySuperHub", -- 文件夹（保持原英文，为路径/文件名）
     
     -- ↓ 以下内容均为可选项，可删除
-    Size = UDim2.fromOffset(580, 460), -- 尺寸（宽580，高460，基于偏移量）
+    Size = UDim2.fromOffset(570, 450), -- 尺寸（宽580，高460，基于偏移量）
     Transparent = true, -- 透明（启用）
     Theme = "Dark", -- 主题（深色模式）
     Resizable = true, -- 可调整大小（启用）
