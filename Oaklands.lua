@@ -161,3 +161,53 @@ local Button = Tab:Button({
         print("金苹果ESP 已添加")
     end
 })
+
+
+local Tab = Window:Tab({
+    Title = "树",
+    Icon = "tree-pine",
+    Locked = false,
+})
+
+
+local Button = Tab:Button({
+    Title = "显示神明树ESP",
+    Desc = "点击显示神明树高亮",
+    Locked = false,
+    Callback = function()
+        for _, tree in ipairs(Workspace.World.TreeRegions.Heavenly:GetChildren()) do
+            if tree:IsA("Model") and tree.Name == "Tree" then
+                if not marked[tree] then
+                    local hl = Instance.new("Highlight")
+                    hl.FillColor = Color3.fromRGB(0,255,0)
+                    hl.OutlineColor = Color3.fromRGB(255,255,255)
+                    hl.FillTransparency = 0.5
+                    hl.OutlineTransparency = 0
+                    hl.Parent = tree
+
+                    local bb = Instance.new("BillboardGui")
+                    bb.Size = UDim2.new(0,100,0,50)
+                    bb.StudsOffset = Vector3.new(0,5,0)
+                    bb.AlwaysOnTop = true
+                    bb.Parent = tree:FindFirstChildWhichIsA("BasePart") or tree
+
+                    local tl = Instance.new("TextLabel")
+                    tl.Size = UDim2.new(1,0,1,0)
+                    tl.BackgroundTransparency = 1
+                    tl.Text = "神明树"
+                    tl.TextColor3 = Color3.fromRGB(0,255,0)
+                    tl.TextStrokeTransparency = 0
+                    tl.Font = Enum.Font.SourceSansBold
+                    tl.TextScaled = true
+                    tl.Parent = bb
+
+                    marked[tree] = {hl=hl, bb=bb}
+                end
+            end
+        end
+        print("神明树ESP已添加")
+    end
+})
+
+local Workspace = game:GetService("Workspace")
+local marked = {}
