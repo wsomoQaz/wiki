@@ -9,7 +9,7 @@ local Window = WindUI:CreateWindow({
     -- ↓ 以下内容均为可选项，可删除
     Size = UDim2.fromOffset(570, 450), -- 尺寸（宽580，高460，基于偏移量）
     Transparent = true, -- 透明（启用）
-    Theme = "Dark", -- 主题（深色模式）
+    Theme = "Indigo", -- 主题（深色模式）
     Resizable = true, -- 可调整大小（启用）
     SideBarWidth = 200, -- 侧边栏宽度（200单位）
     BackgroundImageTransparency = 0.42, -- 背景图透明度（0.42）
