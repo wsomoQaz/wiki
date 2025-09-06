@@ -104,7 +104,6 @@ local Tab = Window:Tab({
 })
 
 
-local Tab = ... -- 你的 Tab 对象
 local treeRegions = game:GetService("Workspace").World.TreeRegions
 
 -- 创建 Toggle 控件
