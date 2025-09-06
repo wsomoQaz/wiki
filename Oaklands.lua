@@ -58,3 +58,10 @@ local Window = WindUI:CreateWindow({
     },
 })
 
+
+
+local Tab = Window:Tab({
+    Title = "Tab Title",
+    Icon = "user-round-cog",
+    Locked = false,
+})
