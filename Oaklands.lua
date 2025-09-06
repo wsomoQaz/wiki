@@ -65,3 +65,35 @@ local Tab = Window:Tab({
     Icon = "user-round-cog",
     Locked = false,
 })
+
+-- 无限跳跃功能
+local UserInputService = game:GetService("UserInputService")
+local InfiniteJumpEnabled = false
+
+-- UI 开关按钮（中文）
+local Toggle = Tab:Toggle({
+    Title = "无限跳跃", -- 按钮标题
+    Desc = "开启后可以在空中无限次跳跃", -- 描述
+    Icon = "arrow-up-from-line", -- 图标（可以换成其他）
+    Type = "Checkbox",
+    Default = false,
+    Callback = function(state)
+        InfiniteJumpEnabled = state
+        if state then
+            print("无限跳跃已开启")
+        else
+            print("无限跳跃已关闭")
+        end
+    end
+})
+
+-- 监听空格键实现无限跳
+UserInputService.JumpRequest:Connect(function()
+    if InfiniteJumpEnabled then
+        local player = game.Players.LocalPlayer
+        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        end
+    end
+end)
