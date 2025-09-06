@@ -105,3 +105,13 @@ local Tab = Window:Tab({
 })
 
 
+local Dropdown = Tab:Dropdown({
+    Title = "分类选择（多选）", -- 下拉菜单标题
+    Values = { "类别 A", "类别 B", "类别 C" }, -- 选项列表
+    Value = { "类别 A" }, -- 默认选中的选项
+    Multi = true, -- 是否支持多选
+    AllowNone = true, -- 是否允许不选择任何项
+    Callback = function(option) 
+        print("已选择的分类: " .. game:GetService("HttpService"):JSONEncode(option)) 
+    end
+})
