@@ -104,3 +104,77 @@ local Tab = Window:Tab({
 })
 
 
+local Tab = ... -- 你的 Tab 对象
+local treeRegions = game:GetService("Workspace").World.TreeRegions
+
+-- 创建 Toggle 控件
+local Toggle = Tab:Toggle({
+    Title = "显示金苹果",
+    Desc = "开关",
+    Icon = "apple",
+    Type = "Checkbox",
+    Default = false,
+    Callback = function(state)
+        ESPEnabled = state
+        print("Golden Apple ESP Activated: " .. tostring(state))
+    end
+})
+
+-- 全局变量控制 ESP 开关
+ESPEnabled = false
+
+-- 循环检测并添加 ESP
+task.spawn(function()
+    while true do
+        task.wait(1)  -- 每秒更新一次
+
+        if ESPEnabled then
+            for _, region in pairs(treeRegions:GetChildren()) do
+                for _, tree in pairs(region:GetChildren()) do
+                    local fruitFolder = tree:FindFirstChild("Fruit")
+                    if fruitFolder then
+                        local goldenAppleFolder = fruitFolder:FindFirstChild("GoldenApple")
+                        if goldenAppleFolder then
+                            for _, fruit in pairs(goldenAppleFolder:GetChildren()) do
+                                if fruit:IsA("BasePart") then
+                                    -- 避免重复添加
+                                    if not fruit:FindFirstChildOfClass("BoxHandleAdornment") then
+                                        local esp = Instance.new("BoxHandleAdornment")
+                                        esp.Adornee = fruit
+                                        esp.AlwaysOnTop = true
+                                        esp.ZIndex = 10
+                                        esp.Size = fruit.Size
+                                        esp.Color3 = Color3.fromRGB(255, 215, 0)
+                                        esp.Transparency = 0.4
+                                        esp.Parent = fruit
+                                    end
+
+                                    if not fruit:FindFirstChild("NameTag") then
+                                        local billboard = Instance.new("BillboardGui")
+                                        billboard.Name = "NameTag"
+                                        billboard.Adornee = fruit
+                                        billboard.Size = UDim2.new(0, 100, 0, 30)
+                                        billboard.StudsOffset = Vector3.new(0, 2, 0)
+                                        billboard.AlwaysOnTop = true
+                                        billboard.Parent = fruit
+
+                                        local label = Instance.new("TextLabel")
+                                        label.Size = UDim2.new(1, 0, 1, 0)
+                                        label.BackgroundTransparency = 1
+                                        label.Text = "金苹果"
+                                        label.TextColor3 = Color3.fromRGB(255, 215, 0)
+                                        label.TextStrokeTransparency = 0.5
+                                        label.Font = Enum.Font.SourceSansBold
+                                        label.TextScaled = true
+                                        label.Parent = billboard
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end)
+
