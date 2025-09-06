@@ -61,7 +61,7 @@ local Window = WindUI:CreateWindow({
 
 
 local Tab = Window:Tab({
-    Title = "Tab Title",
+    Title = "人物功能",
     Icon = "user-round-cog",
     Locked = false,
 })
