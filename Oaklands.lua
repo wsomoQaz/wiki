@@ -97,3 +97,11 @@ UserInputService.JumpRequest:Connect(function()
         end
     end
 end)
+
+local Tab = Window:Tab({
+    Title = "水果",
+    Icon = "apple",
+    Locked = false,
+})
+
+
