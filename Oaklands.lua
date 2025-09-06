@@ -104,13 +104,88 @@ local Tab = Window:Tab({
 })
 
 
+-- 服务
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+local HttpService = game:GetService("HttpService")
+
+-- 用于存储ESP对象
+local ESPObjects = {}
+
+-- 存储当前选中的水果类别
+local SelectedCategories = { "苹果" }
+
+-- 递归遍历对象并找出所有苹果（或其他水果）
+local function FindAllFruits(parent)
+    local fruits = {}
+    for _, child in ipairs(parent:GetChildren()) do
+        -- 假设水果名字包含类别信息，例如 "Apple_类别 A"
+        for _, category in ipairs(SelectedCategories) do
+            if child.Name:lower():find(category:lower()) then
+                table.insert(fruits, child)
+            end
+        end
+        -- 递归搜索子对象
+        for _, f in ipairs(FindAllFruits(child)) do
+            table.insert(fruits, f)
+        end
+    end
+    return fruits
+end
+
+-- 创建ESP
+local function CreateFruitESP()
+    local fruits = FindAllFruits(workspace.World)
+    for _, fruit in ipairs(fruits) do
+        if not ESPObjects[fruit] then
+            local billboard = Instance.new("BillboardGui")
+            billboard.Name = "FruitESP"
+            billboard.Adornee = fruit
+            billboard.Size = UDim2.new(0,100,0,50)
+            billboard.StudsOffset = Vector3.new(0,2,0)
+            billboard.AlwaysOnTop = true
+
+            local textLabel = Instance.new("TextLabel")
+            textLabel.Parent = billboard
+            textLabel.Size = UDim2.new(1,0,1,0)
+            textLabel.BackgroundTransparency = 1
+            textLabel.Text = fruit.Name
+            textLabel.TextColor3 = Color3.fromRGB(255,0,0)
+            textLabel.TextScaled = true
+            textLabel.Font = Enum.Font.SourceSansBold
+
+            billboard.Parent = game:GetService("CoreGui")
+            ESPObjects[fruit] = billboard
+        end
+    end
+end
+
+-- 清理不存在的ESP
+local function CleanESP()
+    for fruit, billboard in pairs(ESPObjects) do
+        if not fruit.Parent then
+            billboard:Destroy()
+            ESPObjects[fruit] = nil
+        end
+    end
+end
+
+-- 循环更新ESP
+RunService.RenderStepped:Connect(function()
+    CreateFruitESP()
+    CleanESP()
+end)
+
+-- 下拉菜单
 local Dropdown = Tab:Dropdown({
-    Title = "水果选择（不建议打开不稀有的水果）", -- 下拉菜单标题
-    Values = { "类别 A", "类别 B", "类别 C" }, -- 选项列表
-    Value = { "类别 A" }, -- 默认选中的选项
-    Multi = true, -- 是否支持多选
-    AllowNone = true, -- 是否允许不选择任何项
-    Callback = function(option) 
-        print("已选择的分类: " .. game:GetService("HttpService"):JSONEncode(option)) 
+    Title = "水果选择（不建议打开不稀有的水果）",
+    Values = { "苹果", "类别 B", "类别 C" },
+    Value = { "类别 A" },
+    Multi = true,
+    AllowNone = true,
+    Callback = function(option)
+        SelectedCategories = option
+        print("已选择的分类: " .. HttpService:JSONEncode(option))
     end
 })
