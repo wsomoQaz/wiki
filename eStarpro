@@ -1,0 +1,36 @@
+local WindUI = loadstring(game:HttpGet("https://github.com/wsomoqaz/CX/releases/latest/download/main.lua"))()
+
+local Window = WindUI:CreateWindow({
+    Title = "Qaz-X",
+    Icon = "door-open",
+    Author = "测试版",
+    Folder = "MyTestHub",
+})
+
+local Tab = Window:Tab({
+    Title = "脚本",
+    Icon = "door-open", 
+    Locked = false,
+})
+
+
+
+local Button = Tab:Button({
+    Title = "生存99天",
+    Desc = "点击即可",
+    Locked = false,
+    Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/wsomoQaz/wiki/main/%E7%94%9F%E5%AD%9899%E5%A4%A9.lua"))()
+        print("clicked")
+    end
+})
+
+local Button = Tab:Button({
+    Title = "Oaklands",
+    Desc = "秘钥 1234",
+    Locked = false,
+    Callback = function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/wsomoQaz/wiki/main/Oaklands.lua"))()
+        print("clicked")
+    end
+})
